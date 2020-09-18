@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate = "~{layout-umum}"
+      xmlns:th="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Webapp Service</title>
+    <!--    <link th:href="">-->
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="my-5">
+        <br><br><br>
+        <div class="container">
+            <div class="row row-center">
+                <div class="col-md-12">
+                    <table class="table table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Provinsi</th>
+                            <th scope="col">#</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="prov: ${provinsi}">
+                                <td th:text="${prov.kodeBps}"></td>
+                                <td th:text="${prov.namaProvinsi}"></td>
+                                <td><a th:href="@{|/provinsidetails/${prov.kodeBps}|}">edit</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate = "~{layout-umum}"
+      xmlns:th="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Webapp Service</title>
+<!--    <link th:href="">-->
+</head>
+<body>
+    <div layout:fragment="content">
+        <section class="my-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 th:text="${nama}"></h1>
+                        <p>lorem ipsum dolor...</p>
+                        <div style="display : flex;">
+                            <a th:href="@{|/list-provinsi|}">provinsi</a>
+                            <a th:href="@{|/list-kabupaten|}">kabupaten</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>

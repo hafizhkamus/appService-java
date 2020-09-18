@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate = "~{layout-umum}"
+      xmlns:th="http://www.thymeleaf.org ">
+<head>
+    <meta charset="UTF-8">
+    <title>Webapp Service</title>
+    <!--    <link th:href="">-->
+</head>
+<body>
+<div layout:fragment="content">
+    <section class="my-5">
+        <br><br><br>
+        <div>
+            <form th:action="@{/saveprov}" th:object="${provinsi}" method="post">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputEmail3" placeholder="ID ( lebih dari 1000 )" th:field="*{kodeBps}">
+                        <span th:if="${#fields.hasErrors('kodeBps')}" th:errors="*{kodeBps}" class="text-warning"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="inputPassword3" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputPassword3" placeholder="Nama Provinsi ( lebih dari 4 )" th:field="*{namaProvinsi}">
+                        <span th:if="${#fields.hasErrors('namaProvinsi')}" th:errors="*{namaProvinsi}" class="text-warning"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">insert</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
