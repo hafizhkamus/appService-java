@@ -103,6 +103,25 @@ public class KabupatenConfig {
 
     }
 
+    public List<Kabupaten> getNama(int idProv) {
+
+        String baseQuery = "select k.kodeBps as idKabupaten, k.namaKabupaten, p.namaProvinsi, k.kodeProvinsi as idProvinsi from kabupaten k inner join provinsi p on " +
+                "k.kodeProvinsi = p.kodeBps where kodeProvinsi = ? ";
+
+        Object[] param = {idProv};
+
+        return jdbcTemplate.query(baseQuery, param, (rs, rowNUm) -> {
+            Kabupaten props = new Kabupaten();
+            props.setKodeBps(rs.getInt("idKabupaten"));
+            props.setNamaKabupaten(rs.getString("namaKabupaten"));
+            Provinsi prov = new Provinsi();
+            prov.setNamaProvinsi(rs.getString("namaProvinsi"));
+            props.setProvinsi(prov);
+            return props;
+        });
+
+    }
+
 
 
         public Optional<Kabupaten> getProvinsiById(int id) {
@@ -141,9 +160,10 @@ public class KabupatenConfig {
     }
 
 
-    public void deleteKabupaten(Kabupaten kabupaten){
+    public void deleteKabupaten(Integer id){
         String baseQuery = "delete from kabupaten where kodeBPS = ?";
-        Object parameters[] = {kabupaten.getKodeBps()};
+
+        Object parameters[] = {id};
 
         jdbcTemplate.update(baseQuery,parameters);
     }

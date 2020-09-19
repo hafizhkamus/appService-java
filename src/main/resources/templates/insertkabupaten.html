@@ -6,11 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Webapp Service</title>
-    <script type="text/script" th:src="@{/js/provinsijson.js}"></script>
     <!--    <link th:href="">-->
 </head>
 <body>
 <div layout:fragment="content">
+    <script type="text/javascript" th:src="@{/js/provinsijson.js}"></script>
     <section class="my-5">
         <br><br><br>
         <div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="form-gourp">
-                    <select id="dataprovinsi" th:field="*{kodeProvinsi}">
+                    <select class="form-control" id="dataprovinsi" th:field="*{kodeProvinsi}">
                     </select>
                 </div>
                 <br>

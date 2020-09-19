@@ -1,20 +1,41 @@
 $(document).ready(function () {
-    $.getJSON("/list-provinsi", function(data) {
-    let cekBoxDiv = '';
-    $.each(data, function (key, val) {
-            cekBoxDiv += "<option class='form-control' value="+val.kodeBps+">"+val.namaProvinsi+"<option>";
-        });
-            $("#dataprovinsi").html(cekBoxDiv);
+    $.getJSON("/list-provinsi", function(data){
+       let cekBoxDiv = '';
+       $.each(data, function (key, val){
+          cekBoxDiv += "<option value="+val.kodeBps+">"+val.namaProvinsi+"</option>"
+       });
+       $("#dataprovinsi").html(cekBoxDiv);
+    });
+})
+
+ $(document).ready (function() {
+        $.getJSON("/listkabjson",function (data){
+        let cekBoxDiv = '';
+            $.each(data, function (key,val){
+                cekBoxDiv += "<option value="+val.kodeBPS+">"+val.namaKabupaten+"</option>";
+            });
+        $("#datakab").html(cekBoxDiv);
         });
     })
 
-   fuction getKab(id){
-      $.getJSON("/listkabupaten/"+id , function(data) {
+    $(document).ready (function() {
+        $.getJSON("/listkecmatanjson",function (data){
         let cekBoxDiv = '';
-        $.each(data, function (key, val) {
-                cekBoxDiv += "<option class='form-control' value="+val.kodeBps+">"+val.Kabupaten+"<option>";
+            $.each(data, function (key,val){
+                cekBoxDiv += "<option value="+val.kodeBPS+">"+val.namaKecamatan+"</option>";
             });
-                $("#datakabupaten").html(cekBoxDiv);
-            });
-        })
-   }
+        $("#datakec").html(cekBoxDiv);
+        });
+    })
+
+     function getKab(id){
+ $(document).ready (function() {
+         $.getJSON("/listkabupaten/"+id,function (data){
+         let cekBoxDiv = '';
+             $.each(data, function (key,val){
+                 cekBoxDiv += "<option value="+val.kodeBPS+">"+val.namaKabupaten+"</option>";
+             });
+         $("#datakabupaten").html(cekBoxDiv);
+         });
+     })
+ }

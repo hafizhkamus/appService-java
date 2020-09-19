@@ -6,11 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Webapp Service</title>
-    <script type="text/script" th:src="@{/js/provinsijson.js}"></script>
     <!--    <link th:href="">-->
 </head>
 <body>
 <div layout:fragment="content">
+    <script type="text/javascript" th:src="@{/js/provinsijson.js}"></script>
     <section class="my-5">
         <br><br><br>
         <div>
@@ -29,14 +29,17 @@
                         <span th:if="${#fields.hasErrors('namaKecamatan')}" th:errors="*{namaKecamatan}" class="text-warning"></span>
                     </div>
                 </div>
-<!--                <div class="form-gourp">-->
-<!--                    <select id="dataprovinsi" th:field="*{kodeProvinsi}">-->
-<!--                    </select>-->
-<!--                </div>-->
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Nama Provinsi</label>
+                    <div class="col-sm-10">
+                        <select class="form-control selectpicker" id="dataprovinsi" onchange="getKab(this.value)" th:field="*{idProvinsi}">
+                        </select>
+                    </div>
+                </div>
                 <br>
-                <div class="form-gourp">
-                    <!--                    <select id="datakabupaten" th:field="*{kodeKabupaten}" onchange="getKab(id)">-->
-                    <!--                    </select>-->
+                <div class="form-group">
+                    <select id="datakabupaten" th:field="*{kodeKabupaten}">
+                    </select>
                 </div>
                 <br><br>
                 <div class="form-group row">

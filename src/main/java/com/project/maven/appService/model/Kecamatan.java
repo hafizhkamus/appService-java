@@ -6,6 +6,10 @@ public class Kecamatan {
     private String namaKecamatan;
     private Integer kodeKabupaten;
     private Kabupaten kabupaten;
+    private Integer idKabupaten;
+    private Provinsi provinsi;
+    private Integer kodeProvinsi;
+
 
     public Integer getIdKecamatan() {
         return idKecamatan;
@@ -37,5 +41,29 @@ public class Kecamatan {
 
     public void setKabupaten(Kabupaten kabupaten) {
         this.kabupaten = kabupaten;
+    }
+
+    public Provinsi getProvinsi() {
+        return provinsi;
+    }
+
+    public void setProvinsi(Provinsi provinsi) {
+        this.provinsi = provinsi;
+    }
+
+    public Integer getKodeProvinsi() {
+        return kodeProvinsi;
+    }
+
+    public void setKodeProvinsi(Integer kodeProvinsi) {
+        this.kodeProvinsi = kodeProvinsi;
+    }
+
+    public Integer getIdKabupaten() {
+        return idKabupaten;
+    }
+
+    public void setIdKabupaten(Integer idKabupaten) {
+        this.idKabupaten = idKabupaten;
     }
 }

@@ -7,6 +7,8 @@ import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Kecamatan;
 import com.project.maven.appService.model.Provinsi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -137,10 +139,31 @@ public class BerandaController {
         return "redirect:list-kabupaten";
     }
 
-    @GetMapping(path = "/listkabupaten")
-    public ResponseEntity<Optional<Kabupaten>> getKabupaten(@PathVariable("id") Integer id){
-        return ResponseEntity.ok().body(conf.getProvinsiById(id));
+    @GetMapping(path = "/listkabupatenjson")
+    public ResponseEntity<List<Kabupaten>> getAllKabupaten(){
+        return ResponseEntity.ok().body(conf.getNama());
     }
+
+    @GetMapping(path = "/listkabupaten/{id}")
+    public ResponseEntity<List<Kabupaten>> getKecamatan(@PathVariable("id") Integer id){
+        return ResponseEntity.ok().body(conf.getNama(id));
+    }
+
+    @DeleteMapping(path = "/kabupaten-deleted/{id}")
+    public ResponseEntity<?> deleteKabupaten(@PathVariable("id") Integer id){
+        try {
+            conf.deleteKabupaten(id);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+//    @GetMapping(path = "/listkabupaten")
+//    public ResponseEntity<Optional<Kabupaten>> getKabupaten(@PathVariable("id") Integer id){
+//        return ResponseEntity.ok().body(conf.getProvinsiById(id));
+//    }
 
 //    @PostMapping(path = "/savekab")
 //    public String deleteKabupaten(@Valid @ModelAttribute Kabupaten kabupaten, BindingResult res){
@@ -149,15 +172,6 @@ public class BerandaController {
 //        }
 //        conf.deleteKabupaten(kabupaten);
 //        return "redirect:list-kabupaten";
-//    }
-
-//    @DeleteMapping(path = "/kabupaten-deleted/{id}")
-//    public String deleteKabupaten(@PathVariable("id") Integer id, BindingResult bind, Kabupaten kabupaten){
-//        Integer kab = kabupaten.getKodeBps();
-//        if (bind.hasErrors()){
-//            return "list-kabupaten";
-//        }
-//        conf.deleteKabupaten(kab);
 //    }
 
 
@@ -215,8 +229,9 @@ public class BerandaController {
         return "redirect:list-kecamatan";
     }
 
-    @GetMapping(path = "/listkecamatan")
-    public ResponseEntity<Optional<Kecamatan>> getKecamatan(@PathVariable("id") Integer id){
-        return ResponseEntity.ok().body(configure.getKecamatanById(id));
+    @GetMapping(path = "/listkecamatanjson")
+    public ResponseEntity<List<Kecamatan>> getAllKecamatan(){
+        return ResponseEntity.ok().body(configure.getNama());
     }
+
 }

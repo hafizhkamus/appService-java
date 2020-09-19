@@ -72,7 +72,7 @@ public class KecamatanConfig {
     }
 
     public Optional<Kecamatan> getKecamatanById(int id) {
-        String baseQuery = "select kodeBPS, namaKecamatan, kodeKabupaten from kecamatan where kodeBps = ?";
+        String baseQuery = "select kodeBPS, namaKecamatan, kodeKabupaten,  from kecamatan where kodeBps = ?";
         Object param[] = {id};
 
         try {
