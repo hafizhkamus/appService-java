@@ -15,7 +15,7 @@ public class MainConfig {
     public DataSource getDataSource(){
         DriverManagerDataSource driver = new DriverManagerDataSource();
         driver.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        driver.setUrl("jdbc:mysql://192.168.100.250/bmt_v1?serverTimezone=UTC");
+        driver.setUrl("jdbc:mysql://tabeldata.ip-dynamic.com/bmt_v1?serverTimezone=UTC");
         driver.setUsername("root");
         driver.setPassword("passwordnyaRoot");
 

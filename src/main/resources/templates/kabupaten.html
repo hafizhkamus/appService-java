@@ -31,7 +31,7 @@
                         <thead>
                         <tr>
                             <th scope="col">id</th>
-                            <th scope="col">kabupaten</th>
+                              <th scope="col">kabupaten</th>
                             <th scope="col">nama provinsi</th>
                             <th scope="col">#</th>
                         </tr>
@@ -42,7 +42,7 @@
                             <td th:text="${kabs.namaKabupaten}"></td>
                             <td th:text="${kabs.provinsi.namaProvinsi}"></td>
                             <td><a th:href="@{|/kabupatendetails/${kabs.kodeBps}|}">edit</a></td>
-                            <td><a th:href="@{|/kabupaten-deleted/${kabs.kodeBps}|}">delete</a></td>
+                            <td><a th:href="@{/kabupaten-deleted/{id}(id=${kabs.kodeBps})}">delete</a></td>
                         </tr>
                         </tbody>
                     </table>

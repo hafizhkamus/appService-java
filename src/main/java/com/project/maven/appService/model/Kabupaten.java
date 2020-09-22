@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+
 public class Kabupaten {
 
     @NotNull(message = "kok kosong?")
@@ -50,4 +51,5 @@ public class Kabupaten {
     public void setProvinsi(Provinsi provinsi) {
         this.provinsi = provinsi;
     }
+
 }

@@ -160,10 +160,10 @@ public class KabupatenConfig {
     }
 
 
-    public void deleteKabupaten(Integer id){
+    public void deleteKabupaten(Kabupaten kabupaten){
         String baseQuery = "delete from kabupaten where kodeBPS = ?";
 
-        Object parameters[] = {id};
+        Object parameters[] = {kabupaten.getKodeProvinsi()};
 
         jdbcTemplate.update(baseQuery,parameters);
     }

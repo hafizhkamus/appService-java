@@ -7,8 +7,6 @@ import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Kecamatan;
 import com.project.maven.appService.model.Provinsi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +33,7 @@ public class BerandaController {
     @Autowired
     private KecamatanConfig configure;
 
+
     @GetMapping(path = "/")
     public String getName(ModelMap model){
         model.put("nama", "welcome");
@@ -56,7 +55,7 @@ public class BerandaController {
         return new ModelAndView("provinsi", map);
     }
 
-    @GetMapping(path = "/list-provinsi")
+    @GetMapping(path = "/api/list-provinsi")
     public ResponseEntity<List<Provinsi>> getProvinsi(){
         return ResponseEntity.ok().body(config.getNama());
     }
@@ -92,6 +91,14 @@ public class BerandaController {
     public String deleteProvinsi(@ModelAttribute Provinsi provinsi){
         config.deleteProvinsi(provinsi);
         return "redirect:list-provinsi";
+    }
+
+    @PostMapping(path = "/api/provinsi/save")
+    public ResponseEntity<Map<String, Object>> saveProvinsiJson(@RequestBody Provinsi provinsi){
+        Map<String,Object> status = new HashMap<>();
+        config.insertOrUpdateProvinsi(provinsi);
+        status.put("message", "OK");
+        return ResponseEntity.ok().body(status);
     }
 
 
@@ -139,9 +146,17 @@ public class BerandaController {
         return "redirect:list-kabupaten";
     }
 
-    @GetMapping(path = "/listkabupatenjson")
+    @GetMapping(path = "/api/listkabupatenjson")
     public ResponseEntity<List<Kabupaten>> getAllKabupaten(){
         return ResponseEntity.ok().body(conf.getNama());
+    }
+
+    @PostMapping(path = "/api/kabupaten/save")
+    public ResponseEntity<Map<String, Object>> saveKabupatenJson(@RequestBody Kabupaten kabupaten){
+        Map<String,Object> status = new HashMap<>();
+        conf.insertOrUpdateKabupaten(kabupaten);
+        status.put("message", "OK");
+        return ResponseEntity.ok().body(status);
     }
 
     @GetMapping(path = "/listkabupaten/{id}")
@@ -149,15 +164,13 @@ public class BerandaController {
         return ResponseEntity.ok().body(conf.getNama(id));
     }
 
-    @DeleteMapping(path = "/kabupaten-deleted/{id}")
-    public ResponseEntity<?> deleteKabupaten(@PathVariable("id") Integer id){
-        try {
-            conf.deleteKabupaten(id);
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping(path = "/kabupaten-deleted/{id}")
+    public String deleteKabupaten(@PathVariable("id") Integer id, Model model){
+        Kabupaten kabupaten = conf.getProvinsiById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid student Id:" + id));
+        conf.deleteKabupaten(kabupaten);
+        model.addAttribute("kabupaten", conf.getNama());
+        return "kabupaten";
     }
 
 //    @GetMapping(path = "/listkabupaten")
