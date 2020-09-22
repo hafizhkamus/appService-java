@@ -7,6 +7,7 @@ import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Kecamatan;
 import com.project.maven.appService.model.Provinsi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -101,6 +102,16 @@ public class BerandaController {
         return ResponseEntity.ok().body(status);
     }
 
+    @GetMapping(path = "/api/provinsidetails/{id}")
+    public ResponseEntity<Provinsi> getProvinsiDetails(@PathVariable("id") Integer id){
+        Optional<Provinsi> prov = config.getProvinsiById(id);
+        if(prov.isPresent()){
+            return ResponseEntity.ok().body(prov.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 
 
 
@@ -154,9 +165,19 @@ public class BerandaController {
     @PostMapping(path = "/api/kabupaten/save")
     public ResponseEntity<Map<String, Object>> saveKabupatenJson(@RequestBody Kabupaten kabupaten){
         Map<String,Object> status = new HashMap<>();
-        conf.insertOrUpdateKabupaten(kabupaten);
+        conf.insertKabupaten(kabupaten);
         status.put("message", "OK");
         return ResponseEntity.ok().body(status);
+    }
+
+    @GetMapping(path = "/api/kabupatendetails/{id}")
+    public ResponseEntity<Kabupaten> getKabupatenDetails(@PathVariable("id") Integer id){
+        Optional<Kabupaten> prov = conf.getProvinsiById(id);
+        if(prov.isPresent()){
+            return ResponseEntity.ok().body(prov.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping(path = "/listkabupaten/{id}")
