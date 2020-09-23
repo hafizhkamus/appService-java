@@ -180,10 +180,10 @@ public class BerandaController {
         }
     }
 
-    @GetMapping(path = "/listkabupaten/{id}")
-    public ResponseEntity<List<Kabupaten>> getKecamatan(@PathVariable("id") Integer id){
-        return ResponseEntity.ok().body(conf.getNama(id));
-    }
+//    @GetMapping(path = "/listkabupaten/{id}")
+//    public ResponseEntity<List<Kabupaten>> getKecamatan(@PathVariable("id") Integer id){
+//        return ResponseEntity.ok().body(conf.getNama(id));
+//    }
 
     @GetMapping(path = "/kabupaten-deleted/{id}")
     public String deleteKabupaten(@PathVariable("id") Integer id, Model model){
@@ -266,6 +266,34 @@ public class BerandaController {
     @GetMapping(path = "/listkecamatanjson")
     public ResponseEntity<List<Kecamatan>> getAllKecamatan(){
         return ResponseEntity.ok().body(configure.getNama());
+    }
+
+    @GetMapping(path = "/api/listkecamatanjson")
+    public ResponseEntity<List<Kecamatan>> getAllKec(){
+        return ResponseEntity.ok().body(configure.getNama());
+    }
+
+    @PostMapping(path = "/api/kecamatan/save")
+    public ResponseEntity<Map<String, Object>> saveKecamatanJson(@RequestBody Kecamatan kecamatan){
+        Map<String,Object> status = new HashMap<>();
+        configure.insertOrUpdateKabupaten(kecamatan);
+        status.put("message", "OK");
+        return ResponseEntity.ok().body(status);
+    }
+
+    @GetMapping(path = "/api/kecamatandetails/{id}")
+    public ResponseEntity<Kecamatan> getKecamatanDetails(@PathVariable("id") Integer id){
+        Optional<Kecamatan> prov = configure.getKecamatanById(id);
+        if(prov.isPresent()){
+            return ResponseEntity.ok().body(prov.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping(path = "/api/listkabupaten/{id}")
+    public ResponseEntity<List<Kabupaten>> getKecamatan(@PathVariable("id") Integer id){
+        return ResponseEntity.ok().body(conf.getNama(id));
     }
 
 }
