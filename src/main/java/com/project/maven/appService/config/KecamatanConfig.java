@@ -5,6 +5,7 @@ import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Kecamatan;
 import com.project.maven.appService.model.Provinsi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -72,7 +73,7 @@ public class KecamatanConfig {
     }
 
     public Optional<Kecamatan> getKecamatanById(int id) {
-        String baseQuery = "select kodeBPS, namaKecamatan, kodeKabupaten,  from kecamatan where kodeBps = ?";
+        String baseQuery = "select k.kodeBPS as idKecamatan, k.namaKecamatan, k.kodeKabupaten, kb.kodeProvinsi as kodeProvinsi from kecamatan k join kabupaten kb on k.kodeKabupaten = kb.kodeBps  where k.kodeBps = ?";
         Object param[] = {id};
 
         try {
