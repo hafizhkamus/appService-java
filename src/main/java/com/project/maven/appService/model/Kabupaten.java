@@ -18,6 +18,8 @@ public class Kabupaten {
 
     private Integer kodeProvinsi;
 
+    private String namaProvinsi;
+
     private Provinsi provinsi;
 
     public Integer getKodeBps() {
@@ -52,4 +54,11 @@ public class Kabupaten {
         this.provinsi = provinsi;
     }
 
+    public String getNamaProvinsi() {
+        return namaProvinsi;
+    }
+
+    public void setNamaProvinsi(String namaProvinsi) {
+        this.namaProvinsi = namaProvinsi;
+    }
 }

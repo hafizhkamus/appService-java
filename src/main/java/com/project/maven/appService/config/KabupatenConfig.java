@@ -1,5 +1,6 @@
 package com.project.maven.appService.config;
 
+import com.project.maven.appService.datatables.DataTableRequest;
 import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Provinsi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +167,19 @@ public class KabupatenConfig {
         Object parameters[] = {kabupaten.getKodeProvinsi()};
 
         jdbcTemplate.update(baseQuery,parameters);
+    }
+
+    public Integer getBanyakKabupaten(){
+        String baseQuery = "select count(kodeBPS) as banyak from kabupaten";
+        return jdbcTemplate.queryForObject(baseQuery, null, Integer.class);
+    }
+
+    public List<Kabupaten> getAllKabupaten(DataTableRequest request){
+        String baseQuery = "SELECT k.kodeBPS, k.namaKabupaten, p.namaProvinsi FROM kabupaten k join provinsi p on k.kodeProvinsi = p.kodeBps "
+                + "order by "+(request.getSortCol()+1)+" "+request.getSortDir()+" limit ? offset ? ";
+        return jdbcTemplate.query(baseQuery, BeanPropertyRowMapper.newInstance(Kabupaten.class),
+                request.getLength(), request.getStart());
+
     }
 
 

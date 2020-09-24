@@ -9,6 +9,8 @@ public class Kecamatan {
     private Integer idKabupaten;
     private Provinsi provinsi;
     private Integer kodeProvinsi;
+    private String namaKabupaten;
+    private String namaProvinsi;
 
 
     public Integer getIdKecamatan() {
@@ -65,5 +67,21 @@ public class Kecamatan {
 
     public void setIdKabupaten(Integer idKabupaten) {
         this.idKabupaten = idKabupaten;
+    }
+
+    public String getNamaKabupaten() {
+        return namaKabupaten;
+    }
+
+    public void setNamaKabupaten(String namaKabupaten) {
+        this.namaKabupaten = namaKabupaten;
+    }
+
+    public String getNamaProvinsi() {
+        return namaProvinsi;
+    }
+
+    public void setNamaProvinsi(String namaProvinsi) {
+        this.namaProvinsi = namaProvinsi;
     }
 }

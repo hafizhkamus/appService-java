@@ -1,6 +1,7 @@
 package com.project.maven.appService.config;
 
 
+import com.project.maven.appService.datatables.DataTableRequest;
 import com.project.maven.appService.model.Provinsi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -71,6 +72,19 @@ public class ConfigJdbc {
         });*/
     }
 
+    public List<Provinsi> getNamaProvinsi(){
+
+        String baseQuery = "select namaProvinsi from provinsi";
+        List<Provinsi> prop = jdbcTemplate.query(baseQuery, BeanPropertyRowMapper.newInstance(Provinsi.class));
+        return prop;
+        /*(rs, rowNUm)-> {
+            Provinsi props = new Provinsi();
+            props.setKodeBps(rs.getInt("kodeBps"));
+            props.setNamaProvinsi(rs.getString("namaProvinsi"));
+            return props;
+        });*/
+    }
+
     public Optional<Provinsi> getProvinsiById(int id) {
         String baseQuery = "select namaProvinsi, kodeBPS from provinsi where kodeBps = ?";
         Object param[] = {id};
@@ -115,6 +129,15 @@ public class ConfigJdbc {
         return provinsi;
     }
 
+    public void deleteProv(Provinsi provinsi){
+        Optional<Provinsi> prop  = getProvinsiById(provinsi.getKodeBps());
+        if (prop.isPresent()){
+            deleteProvinsi(provinsi);
+        } else {
+            insertProvinsi(provinsi);
+        }
+    }
+
     public void insertOrUpdateProvinsi(Provinsi provinsi){
         Optional<Provinsi> prop  = getProvinsiById(provinsi.getKodeBps());
         if (prop.isPresent()){
@@ -123,6 +146,34 @@ public class ConfigJdbc {
             insertProvinsi(provinsi);
         }
     }
+
+    public Integer getBanyakProvinsi(DataTableRequest req){
+        String baseQuery = "select count(kodeBPS) as banyak from provinsi";
+        if(!req.getExtraParam().isEmpty()){
+            String namaProvinsi = (String) req.getExtraParam().get("namaProvinsi");
+            baseQuery = "select count(kodeBPS) as banyak from provinsi where namaProvinsi like concat('%', ?, '%')";
+            return jdbcTemplate.queryForObject(baseQuery, Integer.class, namaProvinsi);
+        } else {
+            return jdbcTemplate.queryForObject(baseQuery, null, Integer.class);
+        }
+    }
+
+    public List<Provinsi> getAllProvinsi(DataTableRequest request){
+        String baseQuery = "SELECT kodeBPS, namaProvinsi FROM provinsi "
+                + "order by "+(request.getSortCol()+1)+" "+request.getSortDir()+" limit ? offset ? ";
+        if(!request.getExtraParam().isEmpty()){
+            String namaProvinsi = (String) request.getExtraParam().get("namaProvinsi");
+             baseQuery = "SELECT kodeBPS, namaProvinsi FROM provinsi where namaProvinsi like concat('%', ?, '%') "
+                    + "order by "+(request.getSortCol()+1)+" "+request.getSortDir()+" limit ? offset ? ";
+            return jdbcTemplate.query(baseQuery, BeanPropertyRowMapper.newInstance(Provinsi.class),namaProvinsi,
+                request.getLength(), request.getStart());
+        } else {
+            return jdbcTemplate.query(baseQuery, BeanPropertyRowMapper.newInstance(Provinsi.class),
+                    request.getLength(), request.getStart());
+        }
+
+    }
+
 
 
 

@@ -3,9 +3,14 @@ package com.project.maven.appService.controller;
 import com.project.maven.appService.config.ConfigJdbc;
 import com.project.maven.appService.config.KabupatenConfig;
 import com.project.maven.appService.config.KecamatanConfig;
+import com.project.maven.appService.datatables.DataTableRequest;
+import com.project.maven.appService.datatables.DataTableResponse;
 import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Kecamatan;
 import com.project.maven.appService.model.Provinsi;
+import com.project.maven.appService.service.KabupatenService;
+import com.project.maven.appService.service.KecamatanService;
+import com.project.maven.appService.service.ProvinsiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +39,15 @@ public class BerandaController {
     @Autowired
     private KecamatanConfig configure;
 
+    @Autowired
+    private ProvinsiService service;
+
+    @Autowired
+    private KabupatenService _service;
+
+    @Autowired
+    private KecamatanService services;
+
 
     @GetMapping(path = "/")
     public String getName(ModelMap model){
@@ -50,7 +64,7 @@ public class BerandaController {
     }
 
     @GetMapping(path = "/listprovinsi")
-    public ModelAndView getAllProvinsi(){
+    public ModelAndView getAllProvinsi(DataTableResponse<Provinsi> datatables){
         Map<String, List<Provinsi>> map = new HashMap<>();
         map.put("provinsi", config.getNama());
         return new ModelAndView("provinsi", map);
@@ -59,6 +73,11 @@ public class BerandaController {
     @GetMapping(path = "/api/list-provinsi")
     public ResponseEntity<List<Provinsi>> getProvinsi(){
         return ResponseEntity.ok().body(config.getNama());
+    }
+
+    @GetMapping(path = "/api/list-nama-provinsi")
+    public ResponseEntity<List<Provinsi>> getNamaProvinsi(){
+        return ResponseEntity.ok().body(config.getNamaProvinsi());
     }
 
     @GetMapping(path = "/provinsidetails/{id}")
@@ -88,11 +107,11 @@ public class BerandaController {
         return "delete";
     }
 
-    @DeleteMapping(path = "/deleteprov")
-    public String deleteProvinsi(@ModelAttribute Provinsi provinsi){
-        config.deleteProvinsi(provinsi);
-        return "redirect:list-provinsi";
-    }
+//    @DeleteMapping(path = "/deleteprov")
+//    public String deleteProvinsi(@ModelAttribute Provinsi provinsi){
+//        config.deleteProvinsi(provinsi);
+//        return "redirect:list-provinsi";
+//    }
 
     @PostMapping(path = "/api/provinsi/save")
     public ResponseEntity<Map<String, Object>> saveProvinsiJson(@RequestBody Provinsi provinsi){
@@ -110,6 +129,14 @@ public class BerandaController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @DeleteMapping("/api/provinsi-deleted/{id}")
+    public ResponseEntity<?> deleteProvinsiById(@PathVariable("id") Provinsi provinsi){
+        Map<String,Object> status = new HashMap<>();
+        config.deleteProv(provinsi);
+        status.put("message", "OK");
+        return ResponseEntity.ok().body(status);
     }
 
 
@@ -294,6 +321,21 @@ public class BerandaController {
     @GetMapping(path = "/api/listkabupaten/{id}")
     public ResponseEntity<List<Kabupaten>> getKecamatan(@PathVariable("id") Integer id){
         return ResponseEntity.ok().body(conf.getNama(id));
+    }
+
+    @PostMapping(path = "/api/listprvinsidatatable")
+    public ResponseEntity<DataTableResponse<Provinsi>> getDataProvinsi(@RequestBody DataTableRequest dataTableRequest){
+        return ResponseEntity.ok().body(service.datatables(dataTableRequest));
+    }
+
+    @PostMapping(path = "/api/listkabupatendatatable")
+    public ResponseEntity<DataTableResponse<Kabupaten>> getDataKabupaten(@RequestBody DataTableRequest dataTableRequest){
+        return ResponseEntity.ok().body(_service.datatables(dataTableRequest));
+    }
+
+    @PostMapping(path = "/api/listkecamatandatatable")
+    public ResponseEntity<DataTableResponse<Kecamatan>> getDataKecamatan(@RequestBody DataTableRequest dataTableRequest){
+        return ResponseEntity.ok().body(services.datatables(dataTableRequest));
     }
 
 }

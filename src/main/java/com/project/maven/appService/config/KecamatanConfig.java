@@ -1,6 +1,7 @@
 package com.project.maven.appService.config;
 
 
+import com.project.maven.appService.datatables.DataTableRequest;
 import com.project.maven.appService.model.Kabupaten;
 import com.project.maven.appService.model.Kecamatan;
 import com.project.maven.appService.model.Provinsi;
@@ -73,7 +74,7 @@ public class KecamatanConfig {
     }
 
     public Optional<Kecamatan> getKecamatanById(int id) {
-        String baseQuery = "select k.kodeBPS as idKecamatan, k.namaKecamatan, k.kodeKabupaten, kb.kodeProvinsi as kodeProvinsi from kecamatan k join kabupaten kb on k.kodeKabupaten = kb.kodeBps  where k.kodeBps = ?";
+        String baseQuery = "select k.kodeBPS as idKecamatan, k.namaKecamatan, k.kodeKabupaten, kb.kodeProvinsi as idProvinsi from kecamatan k join kabupaten kb on k.kodeKabupaten = kb.kodeBps  where k.kodeBps = ?";
         Object param[] = {id};
 
         try {
@@ -105,5 +106,18 @@ public class KecamatanConfig {
         } else {
             insertKabupaten(kecamatan);
         }
+    }
+
+    public Integer getBanyakKecamatan(){
+        String baseQuery = "select count(kodeBPS) as banyak from kecamatan";
+        return jdbcTemplate.queryForObject(baseQuery, null, Integer.class);
+    }
+
+    public List<Kecamatan> getAllKecamatan(DataTableRequest request){
+        String baseQuery = "SELECT k.kodeBPS as idKecamatan, k.namaKecamatan, e.namaKabupaten, p.namaProvinsi  FROM kecamatan k join kabupaten e on k.kodeKabupaten = e.kodeBps join provinsi p on e.kodeProvinsi = p.kodeBps "
+                + "order by "+(request.getSortCol()+1)+" "+request.getSortDir()+" limit ? offset ? ";
+        return jdbcTemplate.query(baseQuery, BeanPropertyRowMapper.newInstance(Kecamatan.class),
+                request.getLength(), request.getStart());
+
     }
 }
